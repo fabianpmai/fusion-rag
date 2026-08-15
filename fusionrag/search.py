@@ -56,8 +56,8 @@ def _llm_scores(query, candidates):
     )
     scores = json.loads(resp.choices[0].message.content)["scores"]
     if len(scores) != len(candidates):
-        return None
-    return [float(s) for s in scores]
+        return None, resp.usage
+    return [float(s) for s in scores], resp.usage
 
 
 class Search:
@@ -69,6 +69,7 @@ class Search:
         self.ids = [str(cid) for cid in npz["chunk_ids"]]
         self.index = Index(text_fields=["text", "title", "guest"]).fit(self.chunks)
         self.embedder = Embedder()
+        self.last_llm_usage = None
 
     def keyword(self, query, k=5):
         docs = self.index.search(query, num_results=6 * k)
@@ -92,7 +93,7 @@ class Search:
 
     def rerank(self, query, k=5):
         candidates = self.hybrid(query, k=10)
-        scores = _llm_scores(query, candidates)
+        scores, self.last_llm_usage = _llm_scores(query, candidates)
         if scores is None:
             return candidates[:k]
         order = sorted(range(len(candidates)), key=lambda i: -scores[i])
