@@ -53,7 +53,11 @@ def judge(question, answer, truth_id):
         }],
         response_format={"type": "json_object"},
     )
-    return int(json.loads(resp.choices[0].message.content)["score"])
+    # one malformed judge reply must not abort the whole (paid) run
+    try:
+        return int(json.loads(resp.choices[0].message.content)["score"])
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 def evaluate(style, t):
@@ -78,7 +82,7 @@ def main():
         with ThreadPoolExecutor(max_workers=4) as ex:
             rows = list(ex.map(lambda t: evaluate(style, t), sample))
         details.extend(rows)
-        scores = [r["score"] for r in rows]
+        scores = [r["score"] for r in rows if r["score"] is not None]
         summary.append({
             "style": style,
             "mean_relevance": round(sum(scores) / len(scores), 3),

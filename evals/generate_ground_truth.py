@@ -39,7 +39,11 @@ def questions_for(chunk):
         messages=[{"role": "user", "content": PROMPT.format(text=chunk["text"])}],
         response_format={"type": "json_object"},
     )
-    qs = json.loads(resp.choices[0].message.content)["questions"]
+    try:
+        qs = json.loads(resp.choices[0].message.content)["questions"]
+    except (KeyError, TypeError):
+        print(f"  skipping {chunk['id']}: malformed reply")
+        return []
     return [(q, chunk["id"]) for q in qs[:3]]
 
 
