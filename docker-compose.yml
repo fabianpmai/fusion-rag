@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: fusionrag
+      POSTGRES_PASSWORD: fusionrag
+      POSTGRES_DB: fusionrag
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fusionrag -d fusionrag"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      DATABASE_URL: postgresql://fusionrag:fusionrag@postgres:5432/fusionrag
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
