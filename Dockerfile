@@ -10,14 +10,16 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-install-project
 
+# bake the embedding model into the image so first use needs no download;
+# right after deps so code/data edits don't invalidate this layer
+COPY fusionrag/__init__.py fusionrag/embedder.py fusionrag/
+RUN uv run --no-sync python -c "from fusionrag.embedder import download; download()"
+
 COPY fusionrag/ fusionrag/
 COPY data/ data/
 COPY app.py smoke.py ./
 COPY pages/ pages/
 RUN uv sync --frozen
-
-# bake the embedding model into the image so first use needs no download
-RUN uv run python -c "from fusionrag.embedder import download; download()"
 
 EXPOSE 8501
 

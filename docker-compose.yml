@@ -18,7 +18,7 @@ services:
     ports:
       - "8501:8501"
     environment:
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?OPENAI_API_KEY not set (cp .env.example .env and fill it in)}
       DATABASE_URL: postgresql://fusionrag:fusionrag@postgres:5432/fusionrag
     depends_on:
       postgres:
