@@ -10,7 +10,9 @@ from pathlib import Path
 
 import numpy as np
 from minsearch import Index
+from openai import OpenAI
 
+from fusionrag import adjacent
 from fusionrag.embedder import Embedder
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -20,18 +22,10 @@ RRF_K = 60
 RERANK_MODEL = "gpt-5.4-mini"
 
 
-def _chunk_index(chunk):
-    return int(chunk["id"].split("-")[1])
-
-
 def _dedup_adjacent(ranked, k):
     picked = []
     for c in ranked:
-        if any(
-            p["episode"] == c["episode"]
-            and abs(_chunk_index(p) - _chunk_index(c)) <= 1
-            for p in picked
-        ):
+        if any(adjacent(p["id"], c["id"]) for p in picked):
             continue
         picked.append(c)
         if len(picked) == k:
@@ -40,8 +34,6 @@ def _dedup_adjacent(ranked, k):
 
 
 def _llm_scores(query, candidates):
-    from openai import OpenAI
-
     passages = "\n\n".join(f"[{i}] {c['text']}" for i, c in enumerate(candidates))
     prompt = (
         "Score how well each passage answers the question, 0 (irrelevant) "
@@ -54,10 +46,13 @@ def _llm_scores(query, candidates):
         messages=[{"role": "user", "content": prompt}],
         response_format={"type": "json_object"},
     )
-    scores = json.loads(resp.choices[0].message.content)["scores"]
+    try:
+        scores = [float(s) for s in json.loads(resp.choices[0].message.content)["scores"]]
+    except (KeyError, TypeError, ValueError):
+        return None
     if len(scores) != len(candidates):
-        return None, resp.usage
-    return [float(s) for s in scores], resp.usage
+        return None
+    return scores
 
 
 class Search:
@@ -69,20 +64,21 @@ class Search:
         self.ids = [str(cid) for cid in npz["chunk_ids"]]
         self.index = Index(text_fields=["text", "title", "guest"]).fit(self.chunks)
         self.embedder = Embedder()
-        self.last_llm_usage = None
-        self.last_scores = None
 
     def keyword(self, query, k=5):
         docs = self.index.search(query, num_results=6 * k)
         return _dedup_adjacent(docs, k)
 
-    def vector(self, query, k=5):
+    def vector_with_scores(self, query, k=5):
+        """Top-k chunks plus their cosine scores, in rank order."""
         scores = self.embeddings @ self.embedder.encode(query)
         order = np.argsort(-scores)[: 6 * k]
         picked = _dedup_adjacent([self.by_id[self.ids[i]] for i in order], k)
         by_id_score = {self.ids[i]: float(scores[i]) for i in order}
-        self.last_scores = [by_id_score[c["id"]] for c in picked]
-        return picked
+        return picked, [by_id_score[c["id"]] for c in picked]
+
+    def vector(self, query, k=5):
+        return self.vector_with_scores(query, k)[0]
 
     def hybrid(self, query, k=5):
         rrf = {}
@@ -97,7 +93,7 @@ class Search:
 
     def rerank(self, query, k=5):
         candidates = self.hybrid(query, k=10)
-        scores, self.last_llm_usage = _llm_scores(query, candidates)
+        scores = _llm_scores(query, candidates)
         if scores is None:
             return candidates[:k]
         order = sorted(range(len(candidates)), key=lambda i: -scores[i])

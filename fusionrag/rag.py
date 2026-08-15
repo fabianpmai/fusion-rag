@@ -9,9 +9,6 @@ from openai import OpenAI
 from fusionrag.search import Search
 
 MODEL = "gpt-5.4-mini"
-# winner of evals/retrieval_eval.py (hit-rate@5 0.787, mrr@5 0.623 — beats
-# keyword/hybrid/rerank on this corpus)
-RETRIEVER = "vector"
 PRICE_IN = 0.75 / 1e6  # USD per token, gpt-5.4-mini (verified 2026-08-15)
 PRICE_OUT = 4.50 / 1e6
 
@@ -92,7 +89,9 @@ class RAG:
         rewritten, usage_rw = self._complete(
             REWRITE_PROMPT.format(question=question)
         )
-        chunks = getattr(self.search, RETRIEVER)(rewritten, k=k)
+        # vector won evals/retrieval_eval.py (hit-rate@5 0.787, mrr@5 0.623 —
+        # beats keyword/hybrid/rerank on this corpus)
+        chunks, scores = self.search.vector_with_scores(rewritten, k=k)
         answer, usage_ans = self._complete(
             ANSWER_PROMPTS[style].format(
                 episodes=self.episodes,
@@ -100,10 +99,9 @@ class RAG:
                 excerpts=_format_excerpts(chunks),
             )
         )
-        usages = [usage_rw, usage_ans, self.search.last_llm_usage]
-        prompt_tokens = sum(u.prompt_tokens for u in usages if u)
-        completion_tokens = sum(u.completion_tokens for u in usages if u)
-        scores = self.search.last_scores if RETRIEVER == "vector" else None
+        usages = [usage_rw, usage_ans]
+        prompt_tokens = sum(u.prompt_tokens for u in usages)
+        completion_tokens = sum(u.completion_tokens for u in usages)
         return {
             "question": question,
             "rewritten_question": rewritten,
