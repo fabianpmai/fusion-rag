@@ -11,6 +11,7 @@ import csv
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+from fusionrag import adjacent
 from fusionrag.search import Search
 
 EVALS = Path(__file__).resolve().parent
@@ -20,16 +21,10 @@ VARIANTS = ["keyword", "vector", "hybrid", "rerank"]
 search = Search()
 
 
-def is_match(result_id, truth_id):
-    ep_r, idx_r = result_id.split("-")
-    ep_t, idx_t = truth_id.split("-")
-    return ep_r == ep_t and abs(int(idx_r) - int(idx_t)) <= 1
-
-
 def reciprocal_rank(fn, question, truth_id):
     results = fn(question, k=K)
     for rank, chunk in enumerate(results):
-        if is_match(chunk["id"], truth_id):
+        if adjacent(chunk["id"], truth_id):
             return 1 / (rank + 1)
     return 0.0
 
