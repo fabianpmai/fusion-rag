@@ -57,7 +57,7 @@ query:          question ─ LLM query rewrite ─ vector search over chunks
 Prerequisites: Docker (with compose), an OpenAI API key.
 
 ```bash
-git clone <this repo> && cd fusion-rag
+git clone https://github.com/fabianpmai/fusion-rag.git && cd fusion-rag
 cp .env.example .env          # put your OPENAI_API_KEY in .env
 docker compose up --build
 ```
@@ -185,6 +185,12 @@ smoke.py        pre-commit pipeline health check
 - **Containerization** — everything in docker-compose (app + Postgres with healthcheck): `docker-compose.yml`, `Dockerfile`
 - **Reproducibility** — pinned deps (`uv.lock`), committed data, eval scripts re-runnable
 - **Best practices** — hybrid search (RRF) evaluated, LLM re-ranking evaluated, query rewriting in the app path
+
+Extras that don't fit a rubric row: sponsor-segment removal during ingest
+(SponsorBlock API + transcript-marker fallback, verified by grepping for the
+ad brands), timestamped deep-link citations into the videos, overlap-aware
+retrieval (adjacent-chunk dedup), the raw-database page, and the embedding
+model baked into the Docker image for offline startup.
 
 ## Attribution
 
