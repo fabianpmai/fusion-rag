@@ -23,9 +23,8 @@ text only.
 User message: {question}"""
 
 ANSWER_PROMPT = """\
-You answer questions about nuclear fusion using excerpts from three Lex
-Fridman podcast episodes (Ian Hutchinson #112, Dennis Whyte #353, David
-Kirtley #485). Rules:
+You answer questions about nuclear fusion using excerpts from Lex Fridman
+podcast episodes ({episodes}). Rules:
 - Use only the excerpts below; if they don't contain the answer, say so.
 - Cite every claim with the matching excerpt's link, exactly in the form
   [{{guest}} @ {{hh:mm:ss}}]({{url}}) using the data given per excerpt.
@@ -52,6 +51,10 @@ class RAG:
     def __init__(self, search=None):
         self.search = search or Search()
         self.client = OpenAI()
+        self.episodes = ", ".join(
+            f"{guest} #{ep}"
+            for ep, guest in sorted({(c["episode"], c["guest"]) for c in self.search.chunks})
+        )
 
     def _complete(self, prompt):
         resp = self.client.chat.completions.create(
@@ -66,7 +69,11 @@ class RAG:
         )
         chunks = self.search.rerank(rewritten, k=k)
         answer, usage_ans = self._complete(
-            ANSWER_PROMPT.format(question=question, excerpts=_format_excerpts(chunks))
+            ANSWER_PROMPT.format(
+                episodes=self.episodes,
+                question=question,
+                excerpts=_format_excerpts(chunks),
+            )
         )
         usages = [usage_rw, usage_ans, self.search.last_llm_usage]
         prompt_tokens = sum(u.prompt_tokens for u in usages if u)
