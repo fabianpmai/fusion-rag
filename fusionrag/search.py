@@ -70,6 +70,7 @@ class Search:
         self.index = Index(text_fields=["text", "title", "guest"]).fit(self.chunks)
         self.embedder = Embedder()
         self.last_llm_usage = None
+        self.last_scores = None
 
     def keyword(self, query, k=5):
         docs = self.index.search(query, num_results=6 * k)
@@ -78,7 +79,10 @@ class Search:
     def vector(self, query, k=5):
         scores = self.embeddings @ self.embedder.encode(query)
         order = np.argsort(-scores)[: 6 * k]
-        return _dedup_adjacent([self.by_id[self.ids[i]] for i in order], k)
+        picked = _dedup_adjacent([self.by_id[self.ids[i]] for i in order], k)
+        by_id_score = {self.ids[i]: float(scores[i]) for i in order}
+        self.last_scores = [by_id_score[c["id"]] for c in picked]
+        return picked
 
     def hybrid(self, query, k=5):
         rrf = {}

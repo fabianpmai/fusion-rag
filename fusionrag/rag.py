@@ -29,8 +29,9 @@ STRICT_PROMPT = """\
 You answer questions about nuclear fusion using excerpts from Lex Fridman
 podcast episodes ({episodes}). Rules:
 - Use only the excerpts below; if they don't contain the answer, say so.
-- Cite every claim with the matching excerpt's link, exactly in the form
-  [{{guest}} @ {{hh:mm:ss}}]({{url}}) using the data given per excerpt.
+- Cite every claim with the matching excerpt's guest, timestamp and link,
+  e.g. [Ian Hutchinson @ 01:23:45](https://www.youtube.com/watch?v=xyz&t=5025s)
+  — no braces or brackets inside the link text.
 - Transcripts are unpunctuated speech; quote meaning, not verbatim text.
 
 Question: {question}
@@ -44,8 +45,10 @@ podcast episodes ({episodes}). Rules:
 - Base the answer on the excerpts below; you may add brief background to
   make it understandable, but never contradict or go beyond them on facts.
   If the excerpts don't cover the question, say so.
-- Cite every excerpt-based claim with the matching link, exactly in the
-  form [{{guest}} @ {{hh:mm:ss}}]({{url}}) using the data given per excerpt.
+- Cite every excerpt-based claim with the matching excerpt's guest,
+  timestamp and link, e.g.
+  [Ian Hutchinson @ 01:23:45](https://www.youtube.com/watch?v=xyz&t=5025s)
+  — no braces or brackets inside the link text.
 - Transcripts are unpunctuated speech; quote meaning, not verbatim text.
 
 Question: {question}
@@ -100,6 +103,7 @@ class RAG:
         usages = [usage_rw, usage_ans, self.search.last_llm_usage]
         prompt_tokens = sum(u.prompt_tokens for u in usages if u)
         completion_tokens = sum(u.completion_tokens for u in usages if u)
+        scores = self.search.last_scores if RETRIEVER == "vector" else None
         return {
             "question": question,
             "rewritten_question": rewritten,
@@ -111,6 +115,7 @@ class RAG:
             "completion_tokens": completion_tokens,
             "cost_usd": prompt_tokens * PRICE_IN + completion_tokens * PRICE_OUT,
             "latency_s": time.time() - t0,
+            "avg_retrieval_score": sum(scores) / len(scores) if scores else None,
         }
 
 
