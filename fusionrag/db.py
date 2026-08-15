@@ -1,8 +1,10 @@
-"""Postgres logging: conversations + feedback. Tables are created on
-connect if missing."""
+"""Postgres logging: conversations + feedback. One module-level connection,
+re-established when it goes stale (Postgres restart, idle timeout). Tables
+are created on first connect if missing."""
 
 import os
 
+import pandas as pd
 import psycopg
 
 DB_URL = os.environ.get(
@@ -30,18 +32,37 @@ CREATE TABLE IF NOT EXISTS feedback (
     ts TIMESTAMPTZ NOT NULL DEFAULT now(),
     thumbs_up BOOLEAN NOT NULL
 );
+CREATE UNIQUE INDEX IF NOT EXISTS feedback_conversation_uq
+    ON feedback (conversation_id);
 """
+
+_conn = None
 
 
 def connect():
-    conn = psycopg.connect(DB_URL, autocommit=True)
-    with conn.cursor() as cur:
+    """Return a live connection, reconnecting if the cached one is dead."""
+    global _conn
+    if _conn is not None and not _conn.closed:
+        try:
+            _conn.execute("SELECT 1")
+            return _conn
+        except psycopg.OperationalError:
+            pass
+    _conn = psycopg.connect(DB_URL, autocommit=True)
+    with _conn.cursor() as cur:
         cur.execute(SCHEMA)
-    return conn
+    return _conn
 
 
-def log_conversation(conn, result):
-    with conn.cursor() as cur:
+def query(sql):
+    with connect().cursor() as cur:
+        cur.execute(sql)
+        cols = [d.name for d in cur.description]
+        return pd.DataFrame(cur.fetchall(), columns=cols)
+
+
+def log_conversation(result):
+    with connect().cursor() as cur:
         cur.execute(
             """INSERT INTO conversations (question, rewritten_question, answer,
                    model, prompt_tokens, completion_tokens, cost_usd, latency_s,
@@ -63,9 +84,20 @@ def log_conversation(conn, result):
         return cur.fetchone()[0]
 
 
-def log_feedback(conn, conversation_id, thumbs_up):
-    with conn.cursor() as cur:
+def log_feedback(conversation_id, thumbs_up):
+    """One row per conversation: changing a vote updates it."""
+    with connect().cursor() as cur:
         cur.execute(
-            "INSERT INTO feedback (conversation_id, thumbs_up) VALUES (%s, %s)",
+            """INSERT INTO feedback (conversation_id, thumbs_up)
+               VALUES (%s, %s)
+               ON CONFLICT (conversation_id)
+               DO UPDATE SET thumbs_up = EXCLUDED.thumbs_up, ts = now()""",
             (conversation_id, thumbs_up),
+        )
+
+
+def delete_feedback(conversation_id):
+    with connect().cursor() as cur:
+        cur.execute(
+            "DELETE FROM feedback WHERE conversation_id = %s", (conversation_id,)
         )

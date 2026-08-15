@@ -6,27 +6,14 @@
 import pandas as pd
 import streamlit as st
 
-from fusionrag import db
+from fusionrag import db, parse_chunk_id
 
 st.set_page_config(page_title="fusion-rag — monitoring", page_icon="📊", layout="wide")
 
-
-@st.cache_resource
-def get_db():
-    return db.connect()
-
-
-def query(sql):
-    with get_db().cursor() as cur:
-        cur.execute(sql)
-        cols = [d.name for d in cur.description]
-        return pd.DataFrame(cur.fetchall(), columns=cols)
-
-
 st.title("📊 Monitoring")
 
-conv = query("SELECT * FROM conversations ORDER BY ts")
-fb = query("SELECT * FROM feedback")
+conv = db.query("SELECT * FROM conversations ORDER BY ts")
+fb = db.query("SELECT * FROM feedback")
 
 if conv.empty:
     st.info("No conversations logged yet — ask something in the chat first.")
@@ -63,8 +50,7 @@ with left:
         conv["retrieved_chunk_ids"]
         .explode()
         .dropna()
-        .str.split("-")
-        .str[0]
+        .map(lambda cid: parse_chunk_id(cid)[0])
         .value_counts()
         .rename("chunks retrieved")
     )
