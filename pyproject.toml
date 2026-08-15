@@ -4,8 +4,10 @@ version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
     "huggingface-hub>=1.27.0",
+    "minsearch>=0.2.0",
     "numpy>=2.5.2",
     "onnxruntime>=1.28.0",
+    "openai>=3.1.0",
     "requests>=2.34.2",
     "tokenizers>=0.23.1",
     "youtube-transcript-api>=1.2.4",
