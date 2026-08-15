@@ -54,21 +54,27 @@ query:          question ─ LLM query rewrite ─ vector search over chunks
 
 ## How to run
 
-Prerequisites: [uv](https://docs.astral.sh/uv/), Docker, an OpenAI API key.
+Prerequisites: Docker (with compose), an OpenAI API key.
 
 ```bash
+git clone <this repo> && cd fusion-rag
 cp .env.example .env          # put your OPENAI_API_KEY in .env
-docker run -d --name fusionrag-pg -e POSTGRES_USER=fusionrag \
-  -e POSTGRES_PASSWORD=fusionrag -e POSTGRES_DB=fusionrag \
-  -p 5432:5432 postgres:17-alpine
-uv run --env-file .env streamlit run app.py
+docker compose up --build
 ```
 
-Open http://localhost:8501 — the `app` page is the chat, `dashboard` is
-monitoring. Tables are created automatically on first use.
+Open http://localhost:8501 — `app` is the chat, `dashboard` is monitoring,
+`database` shows the raw tables. Postgres starts first (healthcheck), the
+app waits for it, and tables are created automatically on first use. The
+embedding model is baked into the image at build time, so nothing is
+downloaded at runtime.
 
-> docker-compose setup (app + Postgres in one command) is landing next;
-> until then the above runs the app locally against a Postgres container.
+For local development without Docker (needs [uv](https://docs.astral.sh/uv/)
+and a Postgres on localhost:5432, e.g. via `docker compose up postgres`
+with the port temporarily published):
+
+```bash
+uv run --env-file .env streamlit run app.py
+```
 
 The ingested data (`data/`) is committed, so you don't need to fetch
 anything from YouTube. To reproduce it from scratch anyway:
@@ -176,7 +182,7 @@ smoke.py        pre-commit pipeline health check
 - **Interface** — Streamlit UI: `app.py`
 - **Ingestion pipeline** — automated script: `fusionrag/ingest.py`
 - **Monitoring** — feedback + dashboard with 6 charts: `pages/dashboard.py`
-- **Containerization** — in progress (docker-compose: app + Postgres)
+- **Containerization** — everything in docker-compose (app + Postgres with healthcheck): `docker-compose.yml`, `Dockerfile`
 - **Reproducibility** — pinned deps (`uv.lock`), committed data, eval scripts re-runnable
 - **Best practices** — hybrid search (RRF) evaluated, LLM re-ranking evaluated, query rewriting in the app path
 
