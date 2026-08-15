@@ -9,6 +9,9 @@ from openai import OpenAI
 from fusionrag.search import Search
 
 MODEL = "gpt-5.4-mini"
+# winner of evals/retrieval_eval.py (hit-rate@5 0.787, mrr@5 0.623 — beats
+# keyword/hybrid/rerank on this corpus)
+RETRIEVER = "vector"
 PRICE_IN = 0.75 / 1e6  # USD per token, gpt-5.4-mini (verified 2026-08-15)
 PRICE_OUT = 4.50 / 1e6
 
@@ -22,7 +25,7 @@ text only.
 
 User message: {question}"""
 
-ANSWER_PROMPT = """\
+STRICT_PROMPT = """\
 You answer questions about nuclear fusion using excerpts from Lex Fridman
 podcast episodes ({episodes}). Rules:
 - Use only the excerpts below; if they don't contain the answer, say so.
@@ -34,6 +37,25 @@ Question: {question}
 
 Excerpts:
 {excerpts}"""
+
+EXPLANATORY_PROMPT = """\
+You answer questions about nuclear fusion using excerpts from Lex Fridman
+podcast episodes ({episodes}). Rules:
+- Base the answer on the excerpts below; you may add brief background to
+  make it understandable, but never contradict or go beyond them on facts.
+  If the excerpts don't cover the question, say so.
+- Cite every excerpt-based claim with the matching link, exactly in the
+  form [{{guest}} @ {{hh:mm:ss}}]({{url}}) using the data given per excerpt.
+- Transcripts are unpunctuated speech; quote meaning, not verbatim text.
+
+Question: {question}
+
+Excerpts:
+{excerpts}"""
+
+ANSWER_PROMPTS = {"strict": STRICT_PROMPT, "explanatory": EXPLANATORY_PROMPT}
+# winner of evals/rag_eval.py (mean relevance 1.84 vs 1.80)
+DEFAULT_STYLE = "explanatory"
 
 
 def _hms(sec):
@@ -62,14 +84,14 @@ class RAG:
         )
         return resp.choices[0].message.content.strip(), resp.usage
 
-    def ask(self, question, k=5):
+    def ask(self, question, k=5, style=DEFAULT_STYLE):
         t0 = time.time()
         rewritten, usage_rw = self._complete(
             REWRITE_PROMPT.format(question=question)
         )
-        chunks = self.search.rerank(rewritten, k=k)
+        chunks = getattr(self.search, RETRIEVER)(rewritten, k=k)
         answer, usage_ans = self._complete(
-            ANSWER_PROMPT.format(
+            ANSWER_PROMPTS[style].format(
                 episodes=self.episodes,
                 question=question,
                 excerpts=_format_excerpts(chunks),
