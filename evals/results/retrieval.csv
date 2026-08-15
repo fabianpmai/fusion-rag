@@ -1,0 +1,5 @@
+variant,hit_rate@5,mrr@5
+keyword,0.553,0.465
+vector,0.787,0.623
+hybrid,0.74,0.557
+rerank,0.757,0.593

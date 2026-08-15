@@ -1,0 +1,101 @@
+style,question,chunk_id,score,cost_usd
+strict,Why do many nuclear engineering students struggle to understand the relationship between mass and energy at first?,353-0018,2,0.00276
+strict,What fuel is a typical nuclear fusion reactor designed to use?,353-0047,2,0.0026
+strict,"What is ITER, and where is the international fusion reactor being built?",353-0101,2,0.00254
+strict,How does the speaker’s view about quantum mechanics in the brain affect the idea that a person’s mind could be copied or downloaded into a digital computer?,112-0079,2,0.00298
+strict,Why would abundant cheap fusion power help reduce geopolitical tensions and speed up advances in AI and other computing-heavy technologies?,485-0129,2,0.00362
+strict,How is the energy from fusion reactions captured and turned into electricity in a reactor?,112-0013,2,0.00369
+strict,Why do researchers need such a large tokamak if the magnetic fields are kept at fairly modest levels?,112-0015,2,0.00274
+strict,"Why do plasmas behave differently from gases, liquids, and solids when it comes to how particles interact?",353-0045,2,0.00294
+strict,How could widespread fusion power plants reduce geopolitical tension linked to energy resources in places like the Middle East or Russia?,485-0025,2,0.00286
+strict,How does the speaker think we should respond to the fact that humans know so little about the world?,112-0051,1,0.00261
+strict,How does a neutron cause uranium-235 to split apart in a fission reaction?,353-0032,2,0.00296
+strict,What is the difference between nuclear fusion and nuclear fission?,353-0032,2,0.00311
+strict,What timelines have different governments set for getting the first fusion power plants connected to the grid?,353-0123,1,0.00267
+strict,How have the stability rules for fusion machines changed from the older approach to the newer one?,485-0080,1,0.00367
+strict,"Why can’t a sun-like fusion reactor be built on Earth, even if the goal is to create a second sun?",353-0081,1,0.00293
+strict,"At very high temperatures in a plasma, why is temperature better understood as particle speed instead of just heat?",485-0068,2,0.00285
+strict,At about what temperature does a gas become a plasma in the discussion?,353-0047,2,0.00216
+strict,Why do fusion reactions need extremely high temperatures before atomic nuclei can join together?,485-0008,2,0.00277
+strict,"What kind of question should be asked to world leaders about the geopolitical effects of cheap, clean, large-scale fusion electricity?",485-0024,2,0.00249
+strict,What makes nuclear fusion a good fit for large AI data centers that use huge amounts of electricity?,485-0124,2,0.00324
+strict,"What kinds of machine design choices can the circuit-level simulations help engineers decide, such as at the level of cables or switches?",485-0080,2,0.00371
+strict,"What is a field-reversed configuration, and how did researchers discover it by accident?",485-0048,2,0.00286
+strict,What kinds of fields besides science does the speaker think can give us real knowledge?,112-0049,2,0.00235
+strict,Why does the speaker think people are naturally drawn to love and loyalty?,112-0057,2,0.00283
+strict,"What is a plasmoid, and why does it last longer than it otherwise would?",485-0055,1,0.0026
+strict,What fuels are used in nuclear fission and in nuclear fusion?,485-0005,2,0.00264
+strict,Why are deuterium and tritium considered the preferred fuels for fusion reactors?,485-0089,2,0.0035
+strict,"How does the speaker describe the current state of scientific tools for studying the human brain, and what kind of progress does the speaker expect in the future?",112-0081,2,0.00306
+strict,What two reasons did the speaker give for being convinced by Christianity?,112-0040,2,0.0024
+strict,About how many atoms are estimated to be in a human body?,353-0005,2,0.00211
+strict,"Will ITER send electricity to the power grid, or is it only meant as an experiment?",112-0016,2,0.00248
+strict,What happens to a charged particle when it is placed in a magnetic field in a fusion device?,485-0039,2,0.00275
+strict,"What is deuterium, and where can it be found on Earth?",485-0005,2,0.00297
+strict,Why does the speaker think electricity demand could rise much faster because of data centers and AI?,485-0126,2,0.00296
+strict,"What does the speaker say worries them more than death, and why?",112-0071,0,0.00243
+strict,"Why does the speaker not worry that a complete physical and chemical explanation of the brain would make the mind, religion, or consciousness disappear?",112-0083,2,0.00303
+strict,How can machine learning and reinforcement learning be used in fusion research and reactor development?,353-0143,2,0.00395
+strict,Why might future major scientific discoveries be made by AI systems instead of by people?,353-0165,2,0.00357
+strict,"According to the speaker, why did Feynman stand out among physicists when he talked about science?",353-0005,2,0.00223
+strict,Why do the speaker and Christians believe it is hard for people to figure out who God is on their own?,112-0044,2,0.00294
+strict,What does the speaker say is remarkable about the way nature's forces and conditions line up to make life possible?,485-0144,2,0.00229
+strict,What kind of shielding is used around Helion's fusion systems to protect people and equipment during operation?,485-0032,2,0.00253
+strict,"What is the difference between a tokamak and a stellarator, and how does Helion’s approach fit into those magnetic fusion systems?",485-0039,1,0.00374
+strict,How do lasers help trigger fusion in the inertial fusion approach?,112-0028,2,0.0029
+strict,What makes turning fusion into a commercial energy source such a difficult challenge?,353-0136,1,0.00353
+strict,"What is a Matrioshka brain, and how could fusion power and AI help a civilization move toward it?",485-0141,2,0.00353
+strict,"What is the speaker’s view of life after death in a Christian sense, and what do they think we can or can’t know about it?",112-0071,2,0.00318
+strict,"What makes manufacturing fusion generators at the scale of hundreds or thousands so difficult, and why does building at scale also help drive innovation?",485-0129,2,0.004
+strict,How can fusion fuel be kept in place at around 100 million degrees without touching it directly?,353-0083,2,0.00296
+strict,"What kind of fusion experiments have already produced net energy, and about how much energy did they make?",112-0015,1,0.00292
+explanatory,Why do many nuclear engineering students struggle to understand the relationship between mass and energy at first?,353-0018,2,0.00304
+explanatory,What fuel is a typical nuclear fusion reactor designed to use?,353-0047,2,0.00311
+explanatory,"What is ITER, and where is the international fusion reactor being built?",353-0101,2,0.00257
+explanatory,How does the speaker’s view about quantum mechanics in the brain affect the idea that a person’s mind could be copied or downloaded into a digital computer?,112-0079,2,0.00301
+explanatory,Why would abundant cheap fusion power help reduce geopolitical tensions and speed up advances in AI and other computing-heavy technologies?,485-0129,2,0.00403
+explanatory,How is the energy from fusion reactions captured and turned into electricity in a reactor?,112-0013,2,0.00356
+explanatory,Why do researchers need such a large tokamak if the magnetic fields are kept at fairly modest levels?,112-0015,2,0.00356
+explanatory,"Why do plasmas behave differently from gases, liquids, and solids when it comes to how particles interact?",353-0045,2,0.0034
+explanatory,How could widespread fusion power plants reduce geopolitical tension linked to energy resources in places like the Middle East or Russia?,485-0025,2,0.00365
+explanatory,How does the speaker think we should respond to the fact that humans know so little about the world?,112-0051,1,0.0035
+explanatory,How does a neutron cause uranium-235 to split apart in a fission reaction?,353-0032,2,0.00304
+explanatory,What is the difference between nuclear fusion and nuclear fission?,353-0032,2,0.00356
+explanatory,What timelines have different governments set for getting the first fusion power plants connected to the grid?,353-0123,1,0.00362
+explanatory,How have the stability rules for fusion machines changed from the older approach to the newer one?,485-0080,1,0.00363
+explanatory,"Why can’t a sun-like fusion reactor be built on Earth, even if the goal is to create a second sun?",353-0081,2,0.00342
+explanatory,"At very high temperatures in a plasma, why is temperature better understood as particle speed instead of just heat?",485-0068,2,0.00318
+explanatory,At about what temperature does a gas become a plasma in the discussion?,353-0047,2,0.00271
+explanatory,Why do fusion reactions need extremely high temperatures before atomic nuclei can join together?,485-0008,2,0.003
+explanatory,"What kind of question should be asked to world leaders about the geopolitical effects of cheap, clean, large-scale fusion electricity?",485-0024,2,0.00313
+explanatory,What makes nuclear fusion a good fit for large AI data centers that use huge amounts of electricity?,485-0124,2,0.00359
+explanatory,"What kinds of machine design choices can the circuit-level simulations help engineers decide, such as at the level of cables or switches?",485-0080,2,0.00319
+explanatory,"What is a field-reversed configuration, and how did researchers discover it by accident?",485-0048,2,0.003
+explanatory,What kinds of fields besides science does the speaker think can give us real knowledge?,112-0049,1,0.00286
+explanatory,Why does the speaker think people are naturally drawn to love and loyalty?,112-0057,2,0.00281
+explanatory,"What is a plasmoid, and why does it last longer than it otherwise would?",485-0055,1,0.00287
+explanatory,What fuels are used in nuclear fission and in nuclear fusion?,485-0005,2,0.00378
+explanatory,Why are deuterium and tritium considered the preferred fuels for fusion reactors?,485-0089,2,0.00359
+explanatory,"How does the speaker describe the current state of scientific tools for studying the human brain, and what kind of progress does the speaker expect in the future?",112-0081,1,0.00297
+explanatory,What two reasons did the speaker give for being convinced by Christianity?,112-0040,2,0.00253
+explanatory,About how many atoms are estimated to be in a human body?,353-0005,2,0.00215
+explanatory,"Will ITER send electricity to the power grid, or is it only meant as an experiment?",112-0016,2,0.0026
+explanatory,What happens to a charged particle when it is placed in a magnetic field in a fusion device?,485-0039,2,0.00293
+explanatory,"What is deuterium, and where can it be found on Earth?",485-0005,2,0.00295
+explanatory,Why does the speaker think electricity demand could rise much faster because of data centers and AI?,485-0126,2,0.00367
+explanatory,"What does the speaker say worries them more than death, and why?",112-0071,2,0.00233
+explanatory,"Why does the speaker not worry that a complete physical and chemical explanation of the brain would make the mind, religion, or consciousness disappear?",112-0083,2,0.00344
+explanatory,How can machine learning and reinforcement learning be used in fusion research and reactor development?,353-0143,2,0.00416
+explanatory,Why might future major scientific discoveries be made by AI systems instead of by people?,353-0165,2,0.00348
+explanatory,"According to the speaker, why did Feynman stand out among physicists when he talked about science?",353-0005,2,0.00239
+explanatory,Why do the speaker and Christians believe it is hard for people to figure out who God is on their own?,112-0044,2,0.00307
+explanatory,What does the speaker say is remarkable about the way nature's forces and conditions line up to make life possible?,485-0144,2,0.00239
+explanatory,What kind of shielding is used around Helion's fusion systems to protect people and equipment during operation?,485-0032,2,0.00258
+explanatory,"What is the difference between a tokamak and a stellarator, and how does Helion’s approach fit into those magnetic fusion systems?",485-0039,1,0.00487
+explanatory,How do lasers help trigger fusion in the inertial fusion approach?,112-0028,2,0.0033
+explanatory,What makes turning fusion into a commercial energy source such a difficult challenge?,353-0136,2,0.00386
+explanatory,"What is a Matrioshka brain, and how could fusion power and AI help a civilization move toward it?",485-0141,2,0.00421
+explanatory,"What is the speaker’s view of life after death in a Christian sense, and what do they think we can or can’t know about it?",112-0071,2,0.00311
+explanatory,"What makes manufacturing fusion generators at the scale of hundreds or thousands so difficult, and why does building at scale also help drive innovation?",485-0129,2,0.00396
+explanatory,How can fusion fuel be kept in place at around 100 million degrees without touching it directly?,353-0083,2,0.00303
+explanatory,"What kind of fusion experiments have already produced net energy, and about how much energy did they make?",112-0015,1,0.00292
