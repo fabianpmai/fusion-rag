@@ -1,24 +1,26 @@
 # fusion-rag
 
-Ask three fusion experts anything. A retrieval-augmented generation (RAG)
-application over the transcripts of three Lex Fridman podcast episodes on
-nuclear fusion. Every answer cites the exact moment in the episode, so you
-can jump into the video and hear the expert say it.
+Ask three nuclear fusion experts anything. A retrieval-augmented
+generation (RAG) application over the transcripts of three Lex Fridman
+podcast episodes about nuclear fusion as a future energy source. Every
+answer cites the exact moment in the episode, so you can jump into the
+video and hear the expert say it.
 
 ## Why I built this
 
 I listen to a lot of science podcasts in my free time, mostly Lex Fridman,
 and the topics I keep coming back to are physics and the future of energy.
-Nuclear fusion is where both meet, and it is at an interesting point right
-now: private companies are promising grid electricity within a decade,
-while the running joke remains that fusion is always 30 years away.
+Nuclear fusion as a power source is where both meet, and it is at an
+interesting point right now: private companies are promising
+fusion-generated grid electricity within a decade, while the running joke
+remains that fusion power is always 30 years away.
 
 The three episodes in this corpus cover that tension from three different
-angles. An MIT plasma physicist explains the fundamentals (2020), the
-director of MIT's Plasma Science & Fusion Center talks about tokamaks and
-SPARC as the private fusion wave took off (2023), and the CEO of Helion
-describes a completely different reactor design and the path to a product
-(2025). That is nearly eight hours of substantive and sometimes
+angles. An MIT plasma physicist explains the physics of nuclear fusion
+(2020), the director of MIT's Plasma Science & Fusion Center talks about
+tokamaks and SPARC as the wave of private fusion energy companies took off
+(2023), and the CEO of Helion describes a completely different reactor
+design and the path to a commercial fusion power product (2025). That is nearly eight hours of substantive and sometimes
 contradicting views, spanning five years of a fast moving field.
 
 The problem is simple: nobody scrubs through eight hours of video to check
@@ -33,9 +35,9 @@ it.
 
 | Episode | Guest | Perspective |
 |---|---|---|
-| [#112 (2020)](https://www.youtube.com/watch?v=pDSEjaDCtOU) | Ian Hutchinson | plasma physicist, MIT: the fundamentals |
-| [#353 (2023)](https://www.youtube.com/watch?v=aJoRMFWn2Jk) | Dennis Whyte | director, MIT Plasma Science & Fusion Center: tokamaks, SPARC |
-| [#485 (2025)](https://www.youtube.com/watch?v=m_CFCyc2Shs) | David Kirtley | CEO, Helion Energy: pulsed fusion, commercialization |
+| [#112 (2020)](https://www.youtube.com/watch?v=pDSEjaDCtOU) | Ian Hutchinson | plasma physicist, MIT: fundamentals of nuclear fusion and plasma physics |
+| [#353 (2023)](https://www.youtube.com/watch?v=aJoRMFWn2Jk) | Dennis Whyte | director, MIT Plasma Science & Fusion Center: tokamaks, SPARC, fusion as an energy source |
+| [#485 (2025)](https://www.youtube.com/watch?v=m_CFCyc2Shs) | David Kirtley | CEO, Helion Energy: pulsed fusion reactors, commercial fusion power |
 
 About 7.7 hours of conversation, 422 searchable chunks after cleaning.
 
